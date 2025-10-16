@@ -1,14 +1,14 @@
 from datetime import datetime
 from sqlalchemy import (
-    Column, Integer, String, Text, ForeignKey,
-    TIMESTAMP, JSON, Enum
+    Column, Integer, String, Text,
+    TIMESTAMP
 )
 from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy.dialects.postgresql import JSONB
+from ..db import database
 
 Base = declarative_base()
 
-class Tournament(Base):
+class Tournament(database.Base):
     __tablename__ = "tournaments"
 
     id = Column(Integer, primary_key=True, index=True)

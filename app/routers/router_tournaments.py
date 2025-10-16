@@ -2,15 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException,status
 from sqlalchemy.orm import Session
 from ..models import tournaments as tm
 from ..schemas import tournaments
+from ..db import database
 
 router = APIRouter(prefix="/tournaments", tags=["Tournaments"])
 
-def get_db():
-    pass
 
 # Create Tournament
 @router.post("/", response_model=tournaments.TournamentResponse)
-def create_tournament(tournament: tournaments.TournamentCreate, db: Session = Depends(get_db)):
+def create_tournament(tournament: tournaments.TournamentCreate, db: Session = Depends(database.get_db)):
     new_tournament = tm.Tournament(**tournament.model_dump())
     db.add(new_tournament)
     db.commit()
@@ -19,12 +18,12 @@ def create_tournament(tournament: tournaments.TournamentCreate, db: Session = De
 
 # Get All Tournaments
 @router.get("/", response_model=list[tournaments.TournamentResponse])
-def get_tournaments(db: Session = Depends(get_db)):
+def get_tournaments(db: Session = Depends(database.get_db)):
     return db.query(tm.Tournament).all()
 
 # Get Tournament by ID
 @router.get("/{id}", response_model=tournaments.TournamentResponse)
-def get_tournament(id: int, db: Session = Depends(get_db)):
+def get_tournament(id: int, db: Session = Depends(database.get_db)):
     tournament = db.query(tm.Tournament).filter(tm.Tournament.id == id).first()
     if not tournament:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tournament not found")
@@ -32,7 +31,7 @@ def get_tournament(id: int, db: Session = Depends(get_db)):
 
 # Update Tournament
 @router.put("/{id}", response_model=tournaments.TournamentResponse)
-def update_tournament(id: int, updated: tournaments.TournamentCreate, db: Session = Depends(get_db)):
+def update_tournament(id: int, updated: tournaments.TournamentCreate, db: Session = Depends(database.get_db)):
     tournament = db.query(tm.Tournament).filter(tm.Tournament.id == id).first()
     if not tournament:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tournament not found")
@@ -44,7 +43,7 @@ def update_tournament(id: int, updated: tournaments.TournamentCreate, db: Sessio
 
 # Delete Tournament
 @router.delete("/{id}")
-def delete_tournament(id: int, db: Session = Depends(get_db)):
+def delete_tournament(id: int, db: Session = Depends(database.get_db)):
     tournament = db.query(tm.Tournament).filter(tm.Tournament.id == id).first()
     if not tournament:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tournament not found")
