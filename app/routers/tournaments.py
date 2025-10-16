@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import models, schemas
-from ..models import tournaments as tm,matches,players,scores,teams
-from ..schemas import matches,players,scores,teams,tournaments
+from ..models import tournaments as tm
+from ..schemas import tournaments
 
 router = APIRouter(prefix="/tournaments", tags=["Tournaments"])
 
@@ -12,7 +11,7 @@ def get_db():
 # Create Tournament
 @router.post("/", response_model=tournaments.TournamentResponse)
 def create_tournament(tournament: tournaments.TournamentCreate, db: Session = Depends(get_db)):
-    new_tournament = tm.Tournament(**tournament.dict())
+    new_tournament = tm.Tournament(**tournament.model_dump())
     db.add(new_tournament)
     db.commit()
     db.refresh(new_tournament)
