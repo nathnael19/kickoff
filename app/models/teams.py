@@ -8,3 +8,22 @@ from sqlalchemy.dialects.postgresql import JSONB
 
 Base = declarative_base()
 
+class Team(Base):
+    __tablename__ = "teams"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tournament_id = Column(Integer, ForeignKey("tournaments.id", ondelete="CASCADE"), nullable=False)
+    name = Column(String(100), nullable=False)
+    department = Column(String(100), nullable=False)
+    logo_url = Column(Text)
+    created_at = Column(TIMESTAMP, default=datetime.utcnow)
+
+    # Relationships
+    tournament = relationship("Tournament", back_populates="teams")
+    players = relationship("Player", back_populates="team", cascade="all, delete")
+    home_matches = relationship("Match", back_populates="home_team", foreign_keys="[Match.home_team_id]")
+    away_matches = relationship("Match", back_populates="away_team", foreign_keys="[Match.away_team_id]")
+
+    def __repr__(self):
+        return f"<Team(name={self.name}, department={self.department})>"
+
