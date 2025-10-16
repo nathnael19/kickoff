@@ -7,7 +7,7 @@ from ..db import database
 router = APIRouter(prefix="/scores", tags=["Scores"])
 
 
-# Create Tournament
+# Create Score
 @router.post("/", response_model=scores.ScoreResponse)
 def create_tournament(tournament: scores.ScoreCreate, db: Session = Depends(database.get_db)):
     new_tournament = s.Score(**tournament.model_dump())
@@ -16,7 +16,7 @@ def create_tournament(tournament: scores.ScoreCreate, db: Session = Depends(data
     db.refresh(new_tournament)
     return new_tournament
 
-# Get All Tournaments
+# Get All Score
 @router.get("/", response_model=list[scores.ScoreResponse])
 def get_tournaments(db: Session = Depends(database.get_db)):
     return db.query(s.Score).all()
