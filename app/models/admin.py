@@ -3,9 +3,7 @@ from sqlalchemy import (
     Column, Integer, String,
     TIMESTAMP
 )
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from ..db.database import Base
 
 class Admin(Base):
     __tablename__ = "admin"

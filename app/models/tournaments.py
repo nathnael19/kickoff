@@ -6,9 +6,8 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship, declarative_base
 from ..db import database
 
-Base = declarative_base()
 
-class Tournament(database.Base):
+class Score(database.Base):
     __tablename__ = "tournaments"
 
     id = Column(Integer, primary_key=True, index=True)

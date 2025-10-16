@@ -1,12 +1,11 @@
 from datetime import datetime
 from sqlalchemy import (
     Column, Integer, String, Text, ForeignKey,
-    TIMESTAMP, JSON, Enum
+    TIMESTAMP
 )
-from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import relationship
+from ..db.database import Base
 
-Base = declarative_base()
 
 class Team(Base):
     __tablename__ = "teams"

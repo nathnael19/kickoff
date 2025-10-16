@@ -1,13 +1,8 @@
-from datetime import datetime
 from sqlalchemy import (
-    Column, Integer, String, Text, ForeignKey,
-    TIMESTAMP, JSON, Enum
+    Column, Integer, ForeignKey
 )
-from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy.dialects.postgresql import JSONB
-
-Base = declarative_base()
-
+from sqlalchemy.orm import relationship
+from ..db.database import Base
 class Assist(Base):
     __tablename__ = "assists"
 

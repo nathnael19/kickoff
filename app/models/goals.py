@@ -1,12 +1,10 @@
 from datetime import datetime
 from sqlalchemy import (
-    Column, Integer, String, Text, ForeignKey,Boolean,
-    TIMESTAMP, JSON, Enum
+    Column, Integer, ForeignKey,Boolean,
+    TIMESTAMP
 )
-from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy.dialects.postgresql import JSONB
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
+from ..db.database import Base
 
 class GoalRecord(Base):
     __tablename__ = "goals"
