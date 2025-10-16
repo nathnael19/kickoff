@@ -7,6 +7,14 @@ class TeamBase(BaseModel):
     name: str
     department: str
     logo_url: Optional[str] = None
+    played: Optional[int] = 0
+    lost: Optional[int] = 0
+    drawn: Optional[int] = 0
+    won: Optional[int] = 0
+    gf: Optional[int] = 0
+    ga: Optional[int] = 0
+    gd: Optional[int] = 0
+    points: Optional[int] = 0
     tournament_id: int
 
 class TeamCreate(TeamBase):

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,status
 from sqlalchemy.orm import Session
 from ..models import tournaments as tm
 from ..schemas import tournaments
@@ -27,7 +27,7 @@ def get_tournaments(db: Session = Depends(get_db)):
 def get_tournament(id: int, db: Session = Depends(get_db)):
     tournament = db.query(tm.Tournament).filter(tm.Tournament.id == id).first()
     if not tournament:
-        raise HTTPException(status_code=404, detail="Tournament not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tournament not found")
     return tournament
 
 # Update Tournament
@@ -35,7 +35,7 @@ def get_tournament(id: int, db: Session = Depends(get_db)):
 def update_tournament(id: int, updated: tournaments.TournamentCreate, db: Session = Depends(get_db)):
     tournament = db.query(tm.Tournament).filter(tm.Tournament.id == id).first()
     if not tournament:
-        raise HTTPException(status_code=404, detail="Tournament not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tournament not found")
     for field, value in updated.dict().items():
         setattr(tournament, field, value)
     db.commit()
@@ -47,7 +47,7 @@ def update_tournament(id: int, updated: tournaments.TournamentCreate, db: Sessio
 def delete_tournament(id: int, db: Session = Depends(get_db)):
     tournament = db.query(tm.Tournament).filter(tm.Tournament.id == id).first()
     if not tournament:
-        raise HTTPException(status_code=404, detail="Tournament not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tournament not found")
     db.delete(tournament)
     db.commit()
     return {"message": "Tournament deleted successfully"}

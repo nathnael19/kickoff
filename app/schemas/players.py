@@ -6,7 +6,7 @@ from datetime import datetime
 class PlayerBase(BaseModel):
     full_name: str
     position: Optional[str] = None
-    jersey_number: Optional[int] = None
+    jersey_number: int
     team_id: int
     goals: Optional[int] = 0
     assists: Optional[int] = 0
