@@ -16,6 +16,14 @@ class Team(Base):
     name = Column(String(100), nullable=False)
     department = Column(String(100), nullable=False)
     logo_url = Column(Text)
+    played = Column(Integer, default=0)
+    won = Column(Integer, default=0)
+    lost = Column(Integer, default=0)
+    drawn = Column(Integer, default=0)
+    gf = Column(Integer, default=0)
+    ga = Column(Integer, default=0)
+    gd = Column(Integer, default=0)
+    points = Column(Integer, default=0)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
 
     # Relationships

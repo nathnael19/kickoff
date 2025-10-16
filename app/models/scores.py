@@ -15,13 +15,12 @@ class Score(Base):
     match_id = Column(Integer, ForeignKey("matches.id", ondelete="CASCADE"), unique=True, nullable=False)
     home_score = Column(Integer, default=0)
     away_score = Column(Integer, default=0)
-    goal_scorers = Column(JSONB)
-    yellow_cards = Column(JSONB)
-    red_cards = Column(JSONB)
+    winner_team_id = Column(Integer,ForeignKey("teams.id",ondelete="CASCADE"),unique=True)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationship
     match = relationship("Match", back_populates="score")
+    winner = relationship("Team",back_populates="score")
 
     def __repr__(self):
         return f"<Score(match_id={self.match_id}, {self.home_score}-{self.away_score})>"
