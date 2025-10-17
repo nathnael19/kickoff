@@ -8,6 +8,12 @@ from typing import Optional
 router = APIRouter(prefix="/teams", tags=["Teams"])
 
 
+# Get All Team
+@router.get("/", response_model=list[teams.TeamResponse])
+def get_teams(db: Session = Depends(database.get_db),search:Optional[str]=""):
+    return db.query(t.Team).filter(t.Team.name.contains(search)).all()
+
+
 # Create Team
 @router.post("/", response_model=teams.TeamResponse)
 def create_team(team: teams.TeamCreate, db: Session = Depends(database.get_db)):
@@ -17,10 +23,6 @@ def create_team(team: teams.TeamCreate, db: Session = Depends(database.get_db)):
     db.refresh(new_team)
     return new_team
 
-# Get All Team
-@router.get("/", response_model=list[teams.TeamResponse])
-def get_teams(db: Session = Depends(database.get_db),search:Optional[str]=""):
-    return db.query(t.Team).filter(t.Team.name.contains(search)).all()
 
 # Get Team by ID
 @router.get("/{id}", response_model=teams.TeamResponse)
