@@ -1,8 +1,5 @@
 from datetime import datetime
-from sqlalchemy import (
-    Column, Integer, String, ForeignKey,
-    TIMESTAMP
-)
+from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP
 from sqlalchemy.orm import relationship
 from ..db.database import Base
 
@@ -21,10 +18,7 @@ class Match(Base):
 
     # Relationships
     tournament = relationship("Tournament", back_populates="matches")
-    home_team = relationship("Team", foreign_keys=[home_team_id], back_populates="home_matches")
-    away_team = relationship("Team", foreign_keys=[away_team_id], back_populates="away_matches")
+    home_team = relationship("Team", back_populates="home_matches", foreign_keys=[home_team_id])
+    away_team = relationship("Team", back_populates="away_matches", foreign_keys=[away_team_id])
     score = relationship("Score", back_populates="match", uselist=False, cascade="all, delete")
-
-    def __repr__(self):
-        return f"<Match({self.home_team_id} vs {self.away_team_id}, status={self.status})>"
-
+    goals = relationship("GoalRecord", back_populates="match", cascade="all, delete")
