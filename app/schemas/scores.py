@@ -6,9 +6,10 @@ class ScoreBase(BaseModel):
     match_id: int
     home_score: Optional[int] = 0
     away_score: Optional[int] = 0
-    goal_scorers: Optional[list] = None
-    yellow_cards: Optional[list] = None
-    red_cards: Optional[list] = None
+    winner_team_id: int
+    # goal_scorers: Optional[list] = None
+    # yellow_cards: Optional[list] = None
+    # red_cards: Optional[list] = None
 
 class ScoreCreate(ScoreBase):
     pass
@@ -18,4 +19,4 @@ class ScoreResponse(ScoreBase):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

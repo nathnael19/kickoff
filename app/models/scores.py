@@ -1,8 +1,5 @@
 from datetime import datetime
-from sqlalchemy import (
-    Column, Integer, ForeignKey,
-    TIMESTAMP
-)
+from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP
 from sqlalchemy.orm import relationship
 from ..db.database import Base
 
@@ -13,12 +10,9 @@ class Score(Base):
     match_id = Column(Integer, ForeignKey("matches.id", ondelete="CASCADE"), unique=True, nullable=False)
     home_score = Column(Integer, default=0)
     away_score = Column(Integer, default=0)
-    winner_team_id = Column(Integer,ForeignKey("teams.id",ondelete="CASCADE"),unique=True)
+    winner_team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"), unique=True, nullable=True)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationship
+    # Relationships
     match = relationship("Match", back_populates="score")
-    winner = relationship("Team",back_populates="score")
-
-    def __repr__(self):
-        return f"<Score(match_id={self.match_id}, {self.home_score}-{self.away_score})>"
+    winner = relationship("Team", back_populates="scores")

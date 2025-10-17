@@ -1,8 +1,5 @@
 from datetime import datetime
-from sqlalchemy import (
-    Column, Integer, String, Text, ForeignKey,
-    TIMESTAMP
-)
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP
 from sqlalchemy.orm import relationship
 from ..db.database import Base
 
@@ -21,9 +18,7 @@ class Player(Base):
     photo_url = Column(Text)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
 
-    # Relationship
+    # Relationships
     team = relationship("Team", back_populates="players")
-
-    def __repr__(self):
-        return f"<Player(full_name={self.full_name}, position={self.position})>"
-
+    assists_records = relationship("Assist", back_populates="player", cascade="all, delete")
+    goals_records = relationship("GoalRecord", back_populates="player", cascade="all, delete")

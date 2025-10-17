@@ -1,11 +1,7 @@
 from datetime import datetime
-from sqlalchemy import (
-    Column, Integer, String, Text, ForeignKey,
-    TIMESTAMP
-)
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP
 from sqlalchemy.orm import relationship
 from ..db.database import Base
-
 
 class Team(Base):
     __tablename__ = "teams"
@@ -30,7 +26,4 @@ class Team(Base):
     players = relationship("Player", back_populates="team", cascade="all, delete")
     home_matches = relationship("Match", back_populates="home_team", foreign_keys="[Match.home_team_id]")
     away_matches = relationship("Match", back_populates="away_team", foreign_keys="[Match.away_team_id]")
-
-    def __repr__(self):
-        return f"<Team(name={self.name}, department={self.department})>"
-
+    scores = relationship("Score", back_populates="winner")
