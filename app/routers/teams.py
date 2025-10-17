@@ -7,46 +7,46 @@ from ..db import database
 router = APIRouter(prefix="/teams", tags=["Teams"])
 
 
-# Create Score
+# Create Team
 @router.post("/", response_model=teams.TeamResponse)
-def create_tournament(tournament: teams.TeamCreate, db: Session = Depends(database.get_db)):
-    new_tournament = t.Team(**tournament.model_dump())
-    db.add(new_tournament)
+def create_team(team: teams.TeamCreate, db: Session = Depends(database.get_db)):
+    new_team = t.Team(**team.model_dump())
+    db.add(new_team)
     db.commit()
-    db.refresh(new_tournament)
-    return new_tournament
+    db.refresh(new_team)
+    return new_team
 
-# Get All Score
+# Get All Team
 @router.get("/", response_model=list[teams.TeamResponse])
-def get_tournaments(db: Session = Depends(database.get_db)):
+def get_teams(db: Session = Depends(database.get_db)):
     return db.query(t.Team).all()
 
-# Get Score by ID
+# Get Team by ID
 @router.get("/{id}", response_model=teams.TeamResponse)
-def get_tournament(id: int, db: Session = Depends(database.get_db)):
-    tournament = db.query(t.Team).filter(t.Team.id == id).first()
-    if not tournament:
+def get_team(id: int, db: Session = Depends(database.get_db)):
+    team = db.query(t.Team).filter(t.Team.id == id).first()
+    if not team:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Score not found")
-    return tournament
+    return team
 
-# Update Score
+# Update Team
 @router.put("/{id}", response_model=teams.TeamResponse)
-def update_tournament(id: int, updated: teams.TeamCreate, db: Session = Depends(database.get_db)):
-    tournament = db.query(t.Team).filter(t.Team.id == id).first()
-    if not tournament:
+def update_team(id: int, updated: teams.TeamCreate, db: Session = Depends(database.get_db)):
+    team = db.query(t.Team).filter(t.Team.id == id).first()
+    if not team:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Score not found")
     for field, value in updated.dict().items():
-        setattr(tournament, field, value)
+        setattr(team, field, value)
     db.commit()
-    db.refresh(tournament)
-    return tournament
+    db.refresh(team)
+    return team
 
-# Delete Score
+# Delete Team
 @router.delete("/{id}")
-def delete_tournament(id: int, db: Session = Depends(database.get_db)):
-    tournament = db.query(t.Team).filter(t.Team.id == id).first()
-    if not tournament:
+def delete_team(id: int, db: Session = Depends(database.get_db)):
+    team = db.query(t.Team).filter(t.Team.id == id).first()
+    if not team:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Score not found")
-    db.delete(tournament)
+    db.delete(team)
     db.commit()
-    return {"message": "Scores deleted successfully"}
+    return {"message": "Teams deleted successfully"}

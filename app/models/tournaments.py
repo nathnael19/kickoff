@@ -2,6 +2,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
 from sqlalchemy.orm import relationship
 from ..db.database import Base
+# from .__init__ import Team
 
 class Tournament(Base):
     __tablename__ = "tournaments"

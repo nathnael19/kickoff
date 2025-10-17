@@ -5,7 +5,7 @@ from app.db.database import Base, engine
 from app.models import *  
 
 # Import routers
-from app.routers import router_tournaments, scores, teams, matches
+from app.routers import router_tournaments, scores, teams, matches,players
 
 # Create all tables in the database
 Base.metadata.create_all(bind=engine)
@@ -18,6 +18,7 @@ app.include_router(router_tournaments.router)
 app.include_router(scores.router)
 app.include_router(teams.router)
 app.include_router(matches.router)
+app.include_router(players.router)
 
 # Root endpoint
 @app.get("/")

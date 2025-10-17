@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
+from .tournaments import TournamentResponse
 
 
 class TeamBase(BaseModel):
@@ -22,6 +23,7 @@ class TeamCreate(TeamBase):
 
 class TeamResponse(TeamBase):
     id: int
+    tournament: TournamentResponse
     created_at: datetime
 
     class Config:
