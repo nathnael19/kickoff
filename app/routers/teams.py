@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..models import teams as t
 from ..schemas import teams
 from ..db import database
+from typing import Optional
 
 router = APIRouter(prefix="/teams", tags=["Teams"])
 
@@ -18,8 +19,8 @@ def create_team(team: teams.TeamCreate, db: Session = Depends(database.get_db)):
 
 # Get All Team
 @router.get("/", response_model=list[teams.TeamResponse])
-def get_teams(db: Session = Depends(database.get_db)):
-    return db.query(t.Team).all()
+def get_teams(db: Session = Depends(database.get_db),search:Optional[str]=""):
+    return db.query(t.Team).filter(t.Team.name.contains(search)).all()
 
 # Get Team by ID
 @router.get("/{id}", response_model=teams.TeamResponse)

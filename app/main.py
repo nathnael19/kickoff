@@ -23,4 +23,4 @@ app.include_router(players.router)
 # Root endpoint
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message":"Server is running!"}

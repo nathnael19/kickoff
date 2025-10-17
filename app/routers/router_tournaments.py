@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..models import tournaments as tm
 from ..schemas import tournaments
 from ..db import database
+from typing import Optional
 
 router = APIRouter(prefix="/tournaments", tags=["Tournaments"])
 
@@ -18,8 +19,8 @@ def create_tournament(tournament: tournaments.TournamentCreate, db: Session = De
 
 # Get All Tournaments
 @router.get("/", response_model=list[tournaments.TournamentResponse])
-def get_tournaments(db: Session = Depends(database.get_db)):
-    return db.query(tm.Tournament).all()
+def get_tournaments(db: Session = Depends(database.get_db),search:Optional[str]=""):
+    return db.query(tm.Tournament).filter(tm.Tournament.name.contains(search)).all()
 
 # Get Tournament by ID
 @router.get("/{id}", response_model=tournaments.TournamentResponse)

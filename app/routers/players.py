@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..models import players as s
 from ..schemas import players
 from ..db import database
+from typing import Optional
 
 router = APIRouter(prefix="/players", tags=["Players"])
 
@@ -18,8 +19,8 @@ def create_Player(player: players.PlayerCreate, db: Session = Depends(database.g
 
 # Get All Player
 @router.get("/", response_model=list[players.PlayerResponse])
-def get_players(db: Session = Depends(database.get_db)):
-    return db.query(s.Player).all()
+def get_players(db: Session = Depends(database.get_db),search:Optional[str]=""):
+    return db.query(s.Player).filter(s.Player.full_name.contains(search)).all()
 
 # Get Player by ID
 @router.get("/{id}", response_model=players.PlayerResponse)
