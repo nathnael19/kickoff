@@ -16,10 +16,10 @@ class TeamBase(BaseModel):
     ga: Optional[int] = 0
     gd: Optional[int] = 0
     points: Optional[int] = 0
-    tournament_id: int
+    
 
 class TeamCreate(TeamBase):
-    pass
+    tournament_id: int
 
 class TeamResponse(TeamBase):
     id: int

@@ -8,6 +8,13 @@ from typing import Optional
 router = APIRouter(prefix="/tournaments", tags=["Tournaments"])
 
 
+# Get All Tournaments
+@router.get("/", response_model=list[tournaments.TournamentResponse])
+def get_tournaments(db: Session = Depends(database.get_db),search:Optional[str]=""):
+    return db.query(tm.Tournament).filter(tm.Tournament.name.contains(search)).all()
+
+
+
 # Create Tournament
 @router.post("/", response_model=tournaments.TournamentResponse)
 def create_tournament(tournament: tournaments.TournamentCreate, db: Session = Depends(database.get_db)):
@@ -17,10 +24,6 @@ def create_tournament(tournament: tournaments.TournamentCreate, db: Session = De
     db.refresh(new_tournament)
     return new_tournament
 
-# Get All Tournaments
-@router.get("/", response_model=list[tournaments.TournamentResponse])
-def get_tournaments(db: Session = Depends(database.get_db),search:Optional[str]=""):
-    return db.query(tm.Tournament).filter(tm.Tournament.name.contains(search)).all()
 
 # Get Tournament by ID
 @router.get("/{id}", response_model=tournaments.TournamentResponse)

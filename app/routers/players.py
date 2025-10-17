@@ -7,6 +7,12 @@ from typing import Optional
 
 router = APIRouter(prefix="/players", tags=["Players"])
 
+# Get All Player
+@router.get("/", response_model=list[players.PlayerResponse])
+def get_players(db: Session = Depends(database.get_db),search:Optional[str]=""):
+    return db.query(s.Player).filter(s.Player.full_name.contains(search)).all()
+
+
 
 # Create Player
 @router.post("/", response_model=players.PlayerResponse)
@@ -17,10 +23,6 @@ def create_Player(player: players.PlayerCreate, db: Session = Depends(database.g
     db.refresh(new_player)
     return new_player
 
-# Get All Player
-@router.get("/", response_model=list[players.PlayerResponse])
-def get_players(db: Session = Depends(database.get_db),search:Optional[str]=""):
-    return db.query(s.Player).filter(s.Player.full_name.contains(search)).all()
 
 # Get Player by ID
 @router.get("/{id}", response_model=players.PlayerResponse)
